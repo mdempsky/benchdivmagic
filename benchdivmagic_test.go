@@ -12,6 +12,54 @@ import (
 
 const StartAddr = 8 << 20 // arbitrary
 
+func TestDivMagic(t *testing.T) {
+	var spans [_NumSizeClasses - 1]mspan
+	for i := range spans {
+		spans[i].init(StartAddr, i+1)
+	}
+
+	for k := uintptr(0); k < 4096; k += 97 {
+		for i := range spans {
+			size := uintptr(class_to_size[i+1])
+
+			base, index := spans[i].findObject(StartAddr + k)
+			if want := StartAddr + index*size; want != base {
+				t.Errorf("bad: %v != %v", want, base)
+			}
+			if StartAddr+k < base || StartAddr+k >= base+size {
+				t.Errorf("also bad; %v %v %v", k, base, size)
+			}
+			if want := spans[i].objIndex(StartAddr + k); want != index {
+				t.Errorf("triple bad: %v %v", want, index)
+			}
+		}
+	}
+}
+
+func TestLemire(t *testing.T) {
+	var spans [_NumSizeClasses - 1]lspan
+	for i := range spans {
+		spans[i].init(StartAddr, i+1)
+	}
+
+	for k := uintptr(0); k < 4096; k += 97 {
+		for i := range spans {
+			size := uintptr(class_to_size[i+1])
+
+			base, index := spans[i].findObject(StartAddr + k)
+			if want := StartAddr + index*size; want != base {
+				t.Errorf("bad: %v != %v", want, base)
+			}
+			if StartAddr+k < base || StartAddr+k >= base+size {
+				t.Errorf("also bad; %v %v %v", k, base, size)
+			}
+			if want := spans[i].objIndex(StartAddr + k); want != index {
+				t.Errorf("triple bad: %v %v", want, index)
+			}
+		}
+	}
+}
+
 var Output uintptr
 
 func BenchmarkDivMagic_objIndex(b *testing.B) {
@@ -227,12 +275,12 @@ func mulptr(a, b uintptr) (hi, lo uintptr) {
 }
 
 func (s *lspan) objIndex(p uintptr) uintptr {
-	n, _ := mulptr(p, s.magic)
+	n, _ := mulptr(p-s.startAddr, s.magic)
 	return n
 }
 
 func (s *lspan) findObject(p uintptr) (base, objIndex uintptr) {
-	objIndex, frac := mulptr(p, s.magic)
+	objIndex, frac := mulptr(p-s.startAddr, s.magic)
 	rem, _ := mulptr(frac, s.elemsize)
 	return p - rem, objIndex
 }
