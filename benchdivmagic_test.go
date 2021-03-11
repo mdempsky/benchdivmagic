@@ -267,11 +267,12 @@ func (s *lspan) init(addr uintptr, sizeclass int) {
 
 func mulptr(a, b uintptr) (hi, lo uintptr) {
 	if unsafe.Sizeof(uintptr(0)) == 4 {
-		x, y := bits.Mul32(uint32(a), uint32(b))
+		x := uint64(a) * uint64(b)
+		return uintptr(x >> 32), uintptr(x)
+	} else {
+		x, y := bits.Mul64(uint64(a), uint64(b))
 		return uintptr(x), uintptr(y)
 	}
-	x, y := bits.Mul64(uint64(a), uint64(b))
-	return uintptr(x), uintptr(y)
 }
 
 func (s *lspan) objIndex(p uintptr) uintptr {
