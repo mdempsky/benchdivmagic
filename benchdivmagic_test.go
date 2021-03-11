@@ -256,34 +256,40 @@ func BenchmarkLemire_findObject(b *testing.B) {
 type lspan struct {
 	startAddr uintptr
 	elemsize  uintptr
-	magic     uintptr
+	magic     lemire
+}
+
+type lemire uintptr
+
+func lemireOf(d uintptr) lemire {
+	return ^lemire(0)/lemire(d) + 1
+}
+
+func (l lemire) div(n uintptr) uintptr {
+	if unsafe.Sizeof(uintptr(0)) == 4 {
+		return uintptr((uint64(n) * uint64(l)) >> 32)
+	} else {
+		x, _ := bits.Mul64(uint64(n), uint64(l))
+		return uintptr(x)
+	}
 }
 
 func (s *lspan) init(addr uintptr, sizeclass int) {
 	s.startAddr = addr
 	s.elemsize = uintptr(class_to_size[sizeclass])
-	s.magic = ^uintptr(0)/s.elemsize + 1
+	s.magic = lemireOf(s.elemsize)
 }
 
-func mulptr(a, b uintptr) (hi, lo uintptr) {
-	if unsafe.Sizeof(uintptr(0)) == 4 {
-		x := uint64(a) * uint64(b)
-		return uintptr(x >> 32), uintptr(x)
-	} else {
-		x, y := bits.Mul64(uint64(a), uint64(b))
-		return uintptr(x), uintptr(y)
-	}
-}
+func (s *lspan) base() uintptr { return s.startAddr }
 
 func (s *lspan) objIndex(p uintptr) uintptr {
-	n, _ := mulptr(p-s.startAddr, s.magic)
-	return n
+	return s.magic.div(p - s.base())
 }
 
 func (s *lspan) findObject(p uintptr) (base, objIndex uintptr) {
-	objIndex, frac := mulptr(p-s.startAddr, s.magic)
-	rem, _ := mulptr(frac, s.elemsize)
-	return p - rem, objIndex
+	objIndex = s.objIndex(p)
+	base = s.base() + objIndex*s.elemsize
+	return
 }
 
 type mspan struct {
