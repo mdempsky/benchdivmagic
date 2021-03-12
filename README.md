@@ -9,16 +9,16 @@ goos: linux
 goarch: amd64
 pkg: github.com/mdempsky/benchdivmagic
 cpu: Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz
-BenchmarkDivMagic_objIndex-8      	  474774	      7129 ns/op
-BenchmarkDivMagic_objIndex2-8     	  569115	      6926 ns/op
-BenchmarkDivMagic_objIndex3-8     	  596546	      6171 ns/op
-BenchmarkDivMagic_objIndex4-8     	  643726	      5574 ns/op
-BenchmarkDivMagic_findObject-8    	  523143	      7707 ns/op
-BenchmarkDivMagic_findObject2-8   	  562238	      6980 ns/op
-BenchmarkDivMagic_findObject3-8   	  515562	      7435 ns/op
-BenchmarkDivMagic_findObject4-8   	  513784	      7625 ns/op
-BenchmarkLemire_objIndex-8        	 1000000	      3347 ns/op
-BenchmarkLemire_findObject-8      	  799466	      4467 ns/op
+BenchmarkDivMagic_objIndex-8      	  431764	      7190 ns/op
+BenchmarkDivMagic_objIndex2-8     	  500112	      6887 ns/op
+BenchmarkDivMagic_objIndex3-8     	  580312	      6245 ns/op
+BenchmarkDivMagic_objIndex4-8     	  625574	      5821 ns/op
+BenchmarkDivMagic_findObject-8    	  438514	      7527 ns/op
+BenchmarkDivMagic_findObject2-8   	  301363	     11383 ns/op
+BenchmarkDivMagic_findObject3-8   	  436406	      7122 ns/op
+BenchmarkDivMagic_findObject4-8   	  508644	      7297 ns/op
+BenchmarkLemire_objIndex-8        	 1000000	      3081 ns/op
+BenchmarkLemire_findObject-8      	  845827	      4081 ns/op
 
 goos: linux
 goarch: 386
@@ -39,16 +39,16 @@ goos: linux
 goarch: amd64
 pkg: github.com/mdempsky/benchdivmagic
 cpu: Intel(R) Xeon(R) Gold 6154 CPU @ 3.00GHz
-BenchmarkDivMagic_objIndex-36       	  420691	      8546 ns/op
-BenchmarkDivMagic_objIndex2-36      	  480241	      7490 ns/op
-BenchmarkDivMagic_objIndex3-36      	  498822	      7255 ns/op
-BenchmarkDivMagic_objIndex4-36      	  545398	      6673 ns/op
-BenchmarkDivMagic_findObject-36     	  417222	      8620 ns/op
-BenchmarkDivMagic_findObject2-36    	  459343	      7833 ns/op
-BenchmarkDivMagic_findObject3-36    	  427113	      8410 ns/op
-BenchmarkDivMagic_findObject4-36    	  427814	      8412 ns/op
-BenchmarkLemire_objIndex-36         	  923226	      3892 ns/op
-BenchmarkLemire_findObject-36       	  673830	      5332 ns/op
+BenchmarkDivMagic_objIndex-36       	  421322	      8587 ns/op
+BenchmarkDivMagic_objIndex2-36      	  475767	      7491 ns/op
+BenchmarkDivMagic_objIndex3-36      	  497272	      7271 ns/op
+BenchmarkDivMagic_objIndex4-36      	  541953	      6599 ns/op
+BenchmarkDivMagic_findObject-36     	  417238	      8630 ns/op
+BenchmarkDivMagic_findObject2-36    	  277136	     13007 ns/op
+BenchmarkDivMagic_findObject3-36    	  428490	      8399 ns/op
+BenchmarkDivMagic_findObject4-36    	  428677	      8401 ns/op
+BenchmarkLemire_objIndex-36         	 1000000	      3408 ns/op
+BenchmarkLemire_findObject-36       	  740534	      4862 ns/op
 
 goos: linux
 goarch: 386
