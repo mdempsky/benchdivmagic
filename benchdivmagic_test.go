@@ -264,7 +264,7 @@ func lemireOf(d uintptr) lemire {
 }
 
 func (l lemire) div(n uintptr) uintptr {
-	return uintptr((uint64(uint32(n)) * uint64(l)) >> 32)
+	return uintptr((uint64(n) * uint64(l)) >> 32)
 }
 
 func (s *lspan) init(addr uintptr, sizeclass int) {
