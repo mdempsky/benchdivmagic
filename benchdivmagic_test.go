@@ -5,9 +5,7 @@
 package benchdivmagic_test
 
 import (
-	"math/bits"
 	"testing"
-	"unsafe"
 )
 
 const StartAddr = 8 << 20 // arbitrary
@@ -259,19 +257,14 @@ type lspan struct {
 	magic     lemire
 }
 
-type lemire uintptr
+type lemire uint32
 
 func lemireOf(d uintptr) lemire {
 	return ^lemire(0)/lemire(d) + 1
 }
 
 func (l lemire) div(n uintptr) uintptr {
-	if unsafe.Sizeof(uintptr(0)) == 4 {
-		return uintptr((uint64(n) * uint64(l)) >> 32)
-	} else {
-		x, _ := bits.Mul64(uint64(n), uint64(l))
-		return uintptr(x)
-	}
+	return uintptr((uint64(uint32(n)) * uint64(l)) >> 32)
 }
 
 func (s *lspan) init(addr uintptr, sizeclass int) {
